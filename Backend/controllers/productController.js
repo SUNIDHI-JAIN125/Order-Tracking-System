@@ -15,7 +15,7 @@ exports.createProduct = catchAsyncError(async (req, res, next) => {
 
   for (let i = 0; i < images.length; i++) {
     const result = await cloudinary.v2.uploader.upload(images[i], {
-      folder: "Shoes Products",
+      folder: "Shoes",
     });
 
     imagesLinks.push({
@@ -46,11 +46,9 @@ exports.getAllProducts = catchAsyncError(async (req, res) => {
 // Get Product Details
 exports.getProductDetails = catchAsyncError(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
-
   if (!product) {
     return next(new ErrorHander("Product not found", 404));
   }
-
   res.status(200).json({
     success: true,
     product,

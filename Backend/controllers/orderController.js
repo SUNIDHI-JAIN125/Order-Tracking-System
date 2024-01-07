@@ -8,7 +8,6 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
   const {
     shippingInfo,
     orderItems,
-    paymentInfo,
     itemsPrice,
     taxPrice,
     shippingPrice,
@@ -18,13 +17,11 @@ exports.newOrder = catchAsyncErrors(async (req, res, next) => {
   const order = await Order.create({
     shippingInfo,
     orderItems,
-    paymentInfo,
     itemsPrice,
     taxPrice,
     shippingPrice,
     totalPrice,
     paidAt: Date.now(),
-    user: req.user._id,
   });
 
   res.status(201).json({
@@ -122,7 +119,7 @@ exports.deleteOrder = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Order not found with this Id", 404));
   }
 
-  await order.remove();
+  await order.deleteOne();
 
   res.status(200).json({
     success: true,
